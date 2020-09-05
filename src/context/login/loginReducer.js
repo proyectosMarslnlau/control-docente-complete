@@ -1,11 +1,29 @@
-import {PRUEBA} from '../../type/index';
+//Importamos los TYPES
+import {LOGIN_USUARIO, CERRAR_USUARIO} from '../../type/index';
+//------------------------------------------
+import {storeData} from '../../resource/js/StoreLogin';
 //-----------------------
+
 export default (state, action) => {
   switch (action.type) {
-    case PRUEBA:
+    case LOGIN_USUARIO:
+      storeData(action.payload);
       return {
         ...state,
-        prueba: action.payload,
+        datosusuario: {
+          nombre: action.payload.nombre,
+          tipo: action.payload.tipo,
+        },
+        estado: action.payload.estado,
+      };
+    case CERRAR_USUARIO:
+      return {
+        ...state,
+        datosusuario: {
+          nombre: action.payload.nombre,
+          tipo: action.payload.tipo,
+        },
+        estado: action.payload.estado,
       };
 
     default:

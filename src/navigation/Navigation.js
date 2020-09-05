@@ -15,6 +15,24 @@ import About from '../screen/About';
 const Stack = createStackNavigator();
 //------------------------------------------------------------------------------
 const Navigation = () => {
+  //Efecto de Carta
+  const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+  //Efecto de FAN
+  const forFade = ({current}) => ({
+    cardStyle: {
+      opacity: current.progress,
+    },
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -23,10 +41,21 @@ const Navigation = () => {
           component={Login}
           options={{
             headerShown: false,
+            transitionSpec: {
+              open: config,
+              close: config,
+            },
           }}
         />
         <Stack.Screen name="splash" component={Splash} />
-        <Stack.Screen name="form" component={Form} />
+        <Stack.Screen
+          name="form"
+          component={Form}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: forFade,
+          }}
+        />
         <Stack.Screen name="about" component={About} />
       </Stack.Navigator>
     </NavigationContainer>

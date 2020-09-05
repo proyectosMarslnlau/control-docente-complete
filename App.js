@@ -27,12 +27,15 @@ import {
 import Navigation from './src/navigation/Navigation';
 //-----------
 import LoginState from './src/context/login/LoginState';
+import AlertState from './src/context/alert/AlertState';
 //-----------------------------------------------------
 const App = () => {
   return (
     <Fragment>
       <LoginState>
-        <Navigation />
+        <AlertState>
+          <Navigation />
+        </AlertState>
       </LoginState>
     </Fragment>
   );
