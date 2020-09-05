@@ -26,7 +26,9 @@ import {getData} from '../resource/js/StoreLogin';
 const Login = ({navigation}) => {
   //------------------------- CONTEXT VARIABLES---------------------------
   const {funcionAlertError, funcionAlertLoading} = useContext(alertContext);
-  const {estado, funcionPeticionDatos} = useContext(loginContext);
+  const {estado, funcionPeticionDatos, funcionCopiarUsuario} = useContext(
+    loginContext,
+  );
 
   //----------------------------------------------------------------------
   // USEEFFECT
@@ -37,6 +39,8 @@ const Login = ({navigation}) => {
         console.log('datos guardados');
         console.log(key);
         if (key.estado === 'unlocked') {
+          //Debemos copiar los datos del STORE al CONTEXT
+          funcionCopiarUsuario(key);
           navigation.navigate('form');
           return null;
         }

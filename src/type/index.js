@@ -9,3 +9,4 @@ export const CAMBIAR_ESTADO_LOADING = 'CAMBIAR_ESTADO_LOADING';
 //----------------------------------
 export const LOGIN_USUARIO = 'LOGIN_USUARIO';
 export const CERRAR_USUARIO = 'CERRAR_USUARIO';
+export const COPIAR_USUARIO = 'COPIAR_USUARIO';

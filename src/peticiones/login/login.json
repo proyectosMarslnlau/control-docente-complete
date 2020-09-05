@@ -1,0 +1,32 @@
+{
+  "dates": [
+    {
+      "id": "1",
+      "nombre": "MARCELO POMA",
+      "usuario": "pmarcelo",
+      "password": "9177322",
+      "tipo": "docente"
+    },
+    {
+      "id": "2",
+      "nombre": "LENNY VALENCIA",
+      "usuario": "vlenny",
+      "password": "12345",
+      "tipo": "docente"
+    },
+    {
+      "id": "3",
+      "nombre": "LAURA ARUQUIPA",
+      "usuario": "alaura",
+      "password": "123456",
+      "tipo": "docente"
+    },
+    {
+      "id": "4",
+      "nombre": "WARA VALENCIA",
+      "usuario": "vwara",
+      "password": "123",
+      "tipo": "docente"
+    }
+  ]
+}

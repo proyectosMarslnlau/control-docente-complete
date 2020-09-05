@@ -9,16 +9,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 //----------------------------------------------------------------
 const Form = ({navigation}) => {
   const {funcionCerrarSesion} = useContext(loginContext);
-
+  //--------------------------------------------------------------
   const removeValue = async () => {
     try {
+      //Borro los datos de STORE
       await AsyncStorage.removeItem('@storage_date_user');
+      //Le doy los valores predeterminados para limpiar el STATE
       const valor = {
         nombre: '',
         tipo: '',
         estado: 'locked',
       };
+      //Invoco la funcion de cerrar sesion del CONTEXT
       funcionCerrarSesion(valor);
+      //Realizao la redireccion al LOGIN nuevamente
       navigation.navigate('login');
       console.log('Done.');
     } catch (e) {
@@ -26,6 +30,7 @@ const Form = ({navigation}) => {
       console.log(e);
     }
   };
+  //------------------------------------------------
   return (
     <View>
       <Text>DESDE EL Form</Text>
