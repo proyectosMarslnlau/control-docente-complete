@@ -13,6 +13,7 @@ export default (state, action) => {
         datosusuario: {
           nombre: action.payload.nombre,
           tipo: action.payload.tipo,
+          identificador: action.payload.carnet,
         },
         estado: action.payload.estado,
       };
@@ -22,6 +23,7 @@ export default (state, action) => {
         datosusuario: {
           nombre: action.payload.nombre,
           tipo: action.payload.tipo,
+          identificador: action.payload.carnet,
         },
         estado: action.payload.estado,
       };
@@ -31,6 +33,7 @@ export default (state, action) => {
         datosusuario: {
           nombre: action.payload.nombre,
           tipo: action.payload.tipo,
+          identificador: action.payload.carnet,
         },
         estado: action.payload.estado,
       };

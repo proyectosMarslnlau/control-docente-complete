@@ -5,12 +5,15 @@ import loginContext from './loginContext';
 //-------------------------------------------
 import {LOGIN_USUARIO, CERRAR_USUARIO, COPIAR_USUARIO} from '../../type/index';
 //-----------------------------
+import axios from 'axios';
+//------------------------------------
 const LoginState = (props) => {
   //Datos iniciales
   const initialState = {
     datosusuario: {
       nombre: '',
       tipo: '',
+      identificador: '',
     },
     estado: 'locked',
   };
@@ -18,23 +21,32 @@ const LoginState = (props) => {
   const [state, dispatch] = useReducer(loginReducer, initialState);
   //-------------------------------------
   //const funcionPeticion
-  const funcionPeticionDatos = (valor) => {
+  const funcionPeticionDatos = async (valor) => {
     const {user, pass} = valor;
+    //Cliente AXIOS
     //--------Simulacion de cambios de estado ------
-    if (user === 'uno' && pass === '123') {
-      const datos = {
-        nombre: 'MARCELO POMA CALLE',
-        tipo: 'docente',
-        estado: 'unlocked',
-      };
-      //
-      dispatch({
-        type: LOGIN_USUARIO,
-        payload: datos,
-      });
+    try {
+      const urlLogin = `http://localhost:5000/dates?usuario=${user}&password=${pass}`;
+      const peticion = await axios.get(urlLogin);
+      const respuestaLogin = peticion.data;
+      console.log(respuestaLogin);
+      if (respuestaLogin.length !== 0) {
+        //Anade el valor de unlocked
+        respuestaLogin[0].estado = 'unlocked';
+        dispatch({
+          type: LOGIN_USUARIO,
+          payload: respuestaLogin[0],
+        });
+        return 'correcto';
+      } else {
+        return 'datos_erroneos';
+      }
+    } catch (error) {
+      console.log(error);
+      return 'service_no_disponible';
     }
   };
-  //
+  //Copiar al state desde el STORE
   const funcionCopiarUsuario = (valor) => {
     dispatch({
       type: COPIAR_USUARIO,
@@ -51,6 +63,7 @@ const LoginState = (props) => {
   return (
     <loginContext.Provider
       value={{
+        datosusuario: state.datosusuario,
         estado: state.estado,
         funcionPeticionDatos,
         funcionCerrarSesion,

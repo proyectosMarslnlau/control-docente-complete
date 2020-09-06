@@ -5,6 +5,7 @@
       "nombre": "MARCELO POMA",
       "usuario": "pmarcelo",
       "password": "9177322",
+      "carnet": "9177322",
       "tipo": "docente"
     },
     {
@@ -12,6 +13,7 @@
       "nombre": "LENNY VALENCIA",
       "usuario": "vlenny",
       "password": "12345",
+      "carnet": "12345",
       "tipo": "docente"
     },
     {
@@ -19,6 +21,7 @@
       "nombre": "LAURA ARUQUIPA",
       "usuario": "alaura",
       "password": "123456",
+      "carnet": "123456",
       "tipo": "docente"
     },
     {
@@ -26,7 +29,12 @@
       "nombre": "WARA VALENCIA",
       "usuario": "vwara",
       "password": "123",
+      "carnet": "123",
       "tipo": "docente"
     }
-  ]
+  ],
+  "docente": [{"id": 1, "body": "some comment", "postId": 1}],
+  "hora": [{"id": 1, "body": "some comment", "postId": 1}],
+  "fecha": [{"id": 1, "body": "some comment", "postId": 1}],
+  "control": [{"id": 1, "body": "some comment", "postId": 1}]
 }

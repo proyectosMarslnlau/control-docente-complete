@@ -14,6 +14,7 @@ const AlertLoading = () => {
       <AwesomeAlert
         show={alertloading}
         showProgress={true}
+        closeOnTouchOutside={true}
         progressColor={'#000'}
         progressSize={40}
         title=" Cargando Información..."

@@ -18,7 +18,7 @@ import {Input, Button} from 'react-native-elements';
 //------------------- ALERT ------------------------
 import AlertLoading from '../item/AlertLoading';
 import AlertError from '../item/AlertError';
-//------------------- STORE -----------------------
+//------------------- STORE LOGIN-----------------------
 import {getData} from '../resource/js/StoreLogin';
 //-------------------------------------------------------------------------
 //                        INICIO DE PROGRAMA
@@ -35,12 +35,15 @@ const Login = ({navigation}) => {
   useEffect(() => {
     //EXTRAE EL VALOR DEL STORE
     getData().then((key) => {
+      //Verificamos si el valor del STORE esta vacio
       if (key !== null) {
         console.log('datos guardados');
         console.log(key);
+        //Verificamos si el estado esta desbloqueado
         if (key.estado === 'unlocked') {
           //Debemos copiar los datos del STORE al CONTEXT
           funcionCopiarUsuario(key);
+          //Nos redirigimos a la carpeta FORM
           navigation.navigate('form');
           return null;
         }
@@ -77,13 +80,33 @@ const Login = ({navigation}) => {
         user: user.toLowerCase(),
         pass: pass.toLowerCase(),
       };
-      funcionPeticionDatos(datosUsuario);
+
+      funcionPeticionDatos(datosUsuario).then((key) => {
+        if (key === 'datos_erroneos') {
+          let valorError = {
+            estado: true,
+            mensaje: 'Datos ingresados Erroneos Intente nuevamente',
+          };
+          funcionAlertError(valorError);
+        } else if (key === 'service_no_disponible') {
+          let valorError = {
+            estado: true,
+            mensaje: 'Service no Disponible Intente Mas Tarde',
+          };
+          funcionAlertError(valorError);
+        }
+        resetEntradas();
+      });
       setTimeout(() => {
         funcionAlertLoading(false);
-      }, 1000);
+      }, 1500);
     }
   };
-
+  //
+  const resetEntradas = () => {
+    guardarPass('');
+    guardarUser('');
+  };
   //------------------ Inicio de CODIGO ---------------------------------
   return (
     <View style={styles.container}>
@@ -112,7 +135,7 @@ const Login = ({navigation}) => {
                     fontSize: 15,
                     fontFamily: 'Montserrat-Medium',
                   }}
-                  //value={user}
+                  value={user}
                 />
                 <Input
                   placeholder="Password"
@@ -122,7 +145,7 @@ const Login = ({navigation}) => {
                     fontSize: 15,
                     fontFamily: 'Montserrat-Medium',
                   }}
-                  //value={pass}
+                  value={pass}
                 />
                 <Button
                   icon={

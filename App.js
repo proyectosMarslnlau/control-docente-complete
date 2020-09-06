@@ -28,13 +28,16 @@ import Navigation from './src/navigation/Navigation';
 //-----------
 import LoginState from './src/context/login/LoginState';
 import AlertState from './src/context/alert/AlertState';
+import FormState from './src/context/form/FormState';
 //-----------------------------------------------------
 const App = () => {
   return (
     <Fragment>
       <LoginState>
         <AlertState>
-          <Navigation />
+          <FormState>
+            <Navigation />
+          </FormState>
         </AlertState>
       </LoginState>
     </Fragment>
