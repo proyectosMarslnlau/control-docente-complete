@@ -41,12 +41,47 @@ const Form = ({navigation}) => {
     funcionPeticionHoraInicial,
     funcionPeticionHoraFinal,
     funcionEnviarDatos,
+    funcionActualizarStore,
   } = useContext(formContext);
 
   //--------------------------------------------------------------
+  useEffect(() => {
+    console.log('genius');
+    getDataTime().then((item) => {
+      if (item !== null) {
+        console.log('datos guardados');
+        console.log(item);
+        funcionActualizarStore(item);
+      } else {
+        console.log('VACIO DESD EL FORMA');
+      }
+    });
+    //Peticion de seleccion de materias para los SELECT
+    funcionPeticionMateriasDocente(identificador);
+    funcionPeticionPlataformas();
+    //--------------------------------------------------
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
   //EXTRAER LOS DATOS DE FORMULARIO
   const [materia, guardarMateria] = useState('Seleccione una Materia');
-  const [titulo, guardarTitulo] = useState('');
+  const [titulo, guardarTitulo] = useState(datos.titulo);
   const [cantidad, guardarCantidad] = useState('');
   const [fecha, guardarFecha] = useState({
     estado: false,
@@ -85,19 +120,6 @@ const Form = ({navigation}) => {
   };
   // ONPRESS OBTENER FECHA
   const onPressFecha = () => {
-    const valorStore = {
-      materia: materia,
-      titulo: titulo,
-      cantidad: cantidad,
-      fecha: fecha,
-      horaini: horainicial,
-      plataforma: plataforma,
-      avance: avance,
-      respaldo: respaldo,
-      horafinal: horafinal,
-      observacion: observacion,
-    };
-    storeDataTime(valorStore);
     funcionPeticionFecha().then((date) => {
       guardarFecha({
         estado: true,
@@ -126,33 +148,26 @@ const Form = ({navigation}) => {
   };
 
   //----------------------------------------------------------------
+
+  //----
   useEffect(() => {
-    getDataTime().then((item) => {
-      console.log(item);
-    });
-    //Peticion de seleccion de materias para los SELECT
-    funcionPeticionMateriasDocente(identificador);
-    funcionPeticionPlataformas();
-    //--------------------------------------------------
-    const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, []);
+    if (fecha.estado !== false) {
+      const valorStore = {
+        materia: materia,
+        titulo: titulo,
+        cantidad: cantidad,
+        fecha: fecha,
+        horaini: horainicial,
+        plataforma: plataforma,
+        avance: avance,
+        respaldo: respaldo,
+        horafinal: horafinal,
+        observacion: observacion,
+      };
+      storeDataTime(valorStore);
+      funcionActualizarStore(valorStore);
+    }
+  }, [fecha.estado]);
   //---------------------------------------------------------------
   const removeValue = async () => {
     try {

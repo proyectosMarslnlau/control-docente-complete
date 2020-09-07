@@ -21,7 +21,7 @@ const FormState = (props) => {
     plataformas: [],
     datos: {
       materia: 'Seleccione una Materiaaaa',
-      titulo: 'LENNYTA ser',
+      titulo: 'LENNYTA LAURA VALENCIA',
       cantidad: '',
       fecha: {
         estado: false,
@@ -132,7 +132,7 @@ const FormState = (props) => {
       console.log(error);
     }
   };
-  const funcionActualizarStore = (valors) => {
+  const funcionActualizarStore = (valor) => {
     dispatch({
       type: ACTUALIZAR_STORE,
       payload: valor,
