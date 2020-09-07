@@ -45,18 +45,28 @@ const Form = ({navigation}) => {
   } = useContext(formContext);
 
   //--------------------------------------------------------------
+
   useEffect(() => {
-    console.log('genius');
+    console.log('JAIME');
     getDataTime().then((item) => {
       if (item !== null) {
-        console.log('datos guardados');
         console.log(item);
-        funcionActualizarStore(item);
+        guardarMateria(item.materia);
+        guardarTitulo(item.titulo);
+        guardarCantidad(item.cantidad);
+        guardarFecha(item.fecha);
+        guardarHoraInicial(item.horaini);
+        guardarPlataforma(item.plataforma);
+        guardarAvance(item.avance);
+        guardarRespaldo(item.respaldo);
+        guardarHoraFinal(item.horafinal);
+        guardarObservacion(item.observacion);
       } else {
         console.log('VACIO DESD EL FORMA');
       }
     });
-    //Peticion de seleccion de materias para los SELECT
+    //
+    //Peticion de seleccion de materias para los SELECTs
     funcionPeticionMateriasDocente(identificador);
     funcionPeticionPlataformas();
     //--------------------------------------------------
@@ -81,7 +91,7 @@ const Form = ({navigation}) => {
   }, []);
   //EXTRAER LOS DATOS DE FORMULARIO
   const [materia, guardarMateria] = useState('Seleccione una Materia');
-  const [titulo, guardarTitulo] = useState(datos.titulo);
+  const [titulo, guardarTitulo] = useState('');
   const [cantidad, guardarCantidad] = useState('');
   const [fecha, guardarFecha] = useState({
     estado: false,
@@ -168,6 +178,44 @@ const Form = ({navigation}) => {
       funcionActualizarStore(valorStore);
     }
   }, [fecha.estado]);
+  //
+  useEffect(() => {
+    if (horainicial.estado !== false) {
+      const valorStore = {
+        materia: materia,
+        titulo: titulo,
+        cantidad: cantidad,
+        fecha: fecha,
+        horaini: horainicial,
+        plataforma: plataforma,
+        avance: avance,
+        respaldo: respaldo,
+        horafinal: horafinal,
+        observacion: observacion,
+      };
+      storeDataTime(valorStore);
+      funcionActualizarStore(valorStore);
+    }
+  }, [horainicial.estado]);
+  //
+  useEffect(() => {
+    if (horafinal.estado !== false) {
+      const valorStore = {
+        materia: materia,
+        titulo: titulo,
+        cantidad: cantidad,
+        fecha: fecha,
+        horaini: horainicial,
+        plataforma: plataforma,
+        avance: avance,
+        respaldo: respaldo,
+        horafinal: horafinal,
+        observacion: observacion,
+      };
+      storeDataTime(valorStore);
+      funcionActualizarStore(valorStore);
+    }
+  }, [horafinal.estado]);
   //---------------------------------------------------------------
   const removeValue = async () => {
     try {
@@ -249,6 +297,7 @@ const Form = ({navigation}) => {
                   placeholder="Cantidad"
                   leftIcon={<Icon name="user" size={15} color="white" />}
                   onChangeText={onChangeCantidad}
+                  value={cantidad}
                 />
               </View>
             </View>

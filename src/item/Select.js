@@ -16,11 +16,7 @@ const Select = ({materia, guardarMateria}) => {
       selectedValue={materia}
       style={styles.selector}
       onValueChange={(itemValue, itemIndex) => guardarMateria(itemValue)}>
-      <Picker.Item
-        label="Seleccion una Opcion"
-        value="default"
-        itemStyle={styles.options}
-      />
+      <Picker.Item label={materia} value={materia} itemStyle={styles.options} />
       {materiasactuales.map((item) => (
         <Picker.Item label={item.materia} value={item.sigla} key={item.id} />
       ))}

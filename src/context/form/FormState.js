@@ -21,7 +21,7 @@ const FormState = (props) => {
     plataformas: [],
     datos: {
       materia: 'Seleccione una Materiaaaa',
-      titulo: 'LENNYTA LAURA VALENCIA',
+      titulo: '',
       cantidad: '',
       fecha: {
         estado: false,
