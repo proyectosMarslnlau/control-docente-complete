@@ -1,5 +1,9 @@
 //Importamos los TYPES
-import {CAMBIAR_ESTADO_ERROR, CAMBIAR_ESTADO_LOADING} from '../../type/index';
+import {
+  CAMBIAR_ESTADO_ERROR,
+  CAMBIAR_ESTADO_LOADING,
+  CAMBIAR_ESTADO_CONFIRM,
+} from '../../type/index';
 //
 export default (state, action) => {
   switch (action.type) {
@@ -13,6 +17,12 @@ export default (state, action) => {
         ...state,
         alertloading: action.payload,
       };
+    case CAMBIAR_ESTADO_CONFIRM:
+      return {
+        ...state,
+        alertconfirm: action.payload,
+      };
+
     default:
       return state;
   }

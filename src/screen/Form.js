@@ -10,22 +10,25 @@ import {
   ScrollView,
   Animated,
 } from 'react-native';
-//------------------  CONTEXT -----------------------------
+//--------------------  CONTEXT -----------------------------
 import loginContext from '../context/login/loginContext';
 import formContext from '../context/form/formContext';
+import alertContext from '../context/alert/alertContext';
 // -------------------- REACT NATIVE ELEMENTS ------------
 import {Button, Input, Slider, CheckBox} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //--------------------- STORE-------------------------------
 import AsyncStorage from '@react-native-community/async-storage';
 import {getDataTime, storeDataTime} from '../resource/js/StoreTime';
-//-------------------- MEDIDAS -----------------------
+//--------------------- MEDIDAS -----------------------
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../resource/js/Device';
 //----------------------------------------------------------------
-//---------------ITEMS DE FORMULARIO -------
+//ITEMS DE FORMULARIO
+//----------------------------------------------------------------
 import Select from '../item/Select';
 import SelectPlataform from '../item/SelectPlataform';
 import Camera from '../item/Camera';
+import AlertConfirm from '../item/AlertConfirm';
 //----------------------------------
 //INICIO DE PROGRAMA
 //------------------------------------
@@ -43,11 +46,11 @@ const Form = ({navigation}) => {
     funcionEnviarDatos,
     funcionActualizarStore,
   } = useContext(formContext);
-
+  const {alertconfirm, funcionAlertConfirm} = useContext(alertContext);
   //--------------------------------------------------------------
 
   useEffect(() => {
-    console.log('JAIME');
+    //Obtiene del store y actualiza los STATE
     getDataTime().then((item) => {
       if (item !== null) {
         console.log(item);
@@ -62,14 +65,15 @@ const Form = ({navigation}) => {
         guardarHoraFinal(item.horafinal);
         guardarObservacion(item.observacion);
       } else {
-        console.log('VACIO DESD EL FORMA');
+        console.log('STORE VACIO');
       }
     });
     //
-    //Peticion de seleccion de materias para los SELECTs
+    //Peticion de seleccion de materias para los SELECT API
     funcionPeticionMateriasDocente(identificador);
     funcionPeticionPlataformas();
     //--------------------------------------------------
+    //Se declara la funcionalidad del boton de BACK
     const backAction = () => {
       Alert.alert('Hold on!', 'Are you sure you want to go back?', [
         {
@@ -88,8 +92,11 @@ const Form = ({navigation}) => {
     );
 
     return () => backHandler.remove();
+    //-------------------------------------------------------------------
   }, []);
+  //------------------------------------------------------------------------
   //EXTRAER LOS DATOS DE FORMULARIO
+  //-------------------------------------------------------------------------
   const [materia, guardarMateria] = useState('Seleccione una Materia');
   const [titulo, guardarTitulo] = useState('');
   const [cantidad, guardarCantidad] = useState('');
@@ -113,9 +120,9 @@ const Form = ({navigation}) => {
   });
   const [observacion, guardarObservacion] = useState('');
   //------------------------------------------------------------
-  //ESTADOS FINALES
-  //------------------------------------------------------------
-  const [valor, guardarValor] = useState({});
+  //Funcion de ONCHANGE de las entradas
+  //funcion de ONPRESS de las entradas
+  //-----------------------------------------------------------
   //Extraer informacion de TITULO
   const onChangeTitulo = (valor) => {
     guardarTitulo(valor);
@@ -130,36 +137,53 @@ const Form = ({navigation}) => {
   };
   // ONPRESS OBTENER FECHA
   const onPressFecha = () => {
-    funcionPeticionFecha().then((date) => {
+    const date = {
+      estado: true,
+      valor: 1,
+    };
+    funcionAlertConfirm(date);
+    /*funcionPeticionFecha().then((date) => {
       guardarFecha({
         estado: true,
         fecha: date,
       });
-    });
+    });*/
   };
   // ONPRESS OBTENER HORA INICIAL
   const onPressHoraInicial = () => {
+    const date = {
+      estado: true,
+      valor: 2,
+    };
+    funcionAlertConfirm(date);
+    /*
     funcionPeticionHoraInicial().then((time) => {
       guardarHoraInicial({
         estado: true,
         horaini: time,
       });
-    });
+    });*/
   };
 
   // ONPRESS OBTENER HORA FINAL
   const onPressHoraFinal = () => {
+    const date = {
+      estado: true,
+      valor: 3,
+    };
+    funcionAlertConfirm(date);
+    /*
     funcionPeticionHoraFinal().then((time) => {
       guardarHoraFinal({
         estado: true,
         horafin: time,
       });
-    });
+    });*/
   };
 
   //----------------------------------------------------------------
-
-  //----
+  //USE EFFECT para poder guardar los DATOS ACTUALES en el STORE BOTON FECHA
+  //-------------------------------------------------------------------
   useEffect(() => {
     if (fecha.estado !== false) {
       const valorStore = {
@@ -178,7 +202,9 @@ const Form = ({navigation}) => {
       funcionActualizarStore(valorStore);
     }
   }, [fecha.estado]);
-  //
+  //----------------------------------------------------------------
+  //USE EFFECT para poder guardar los DATOS ACTUALES en el STORE BOTON HORA INICIAL
+  //-------------------------------------------------------------------
   useEffect(() => {
     if (horainicial.estado !== false) {
       const valorStore = {
@@ -197,7 +223,9 @@ const Form = ({navigation}) => {
       funcionActualizarStore(valorStore);
     }
   }, [horainicial.estado]);
-  //
+  //----------------------------------------------------------------
+  //USE EFFECT para poder guardar los DATOS ACTUALES en el STORE BOTON HORA FINAL
+  //-------------------------------------------------------------------
   useEffect(() => {
     if (horafinal.estado !== false) {
       const valorStore = {
@@ -217,6 +245,8 @@ const Form = ({navigation}) => {
     }
   }, [horafinal.estado]);
   //---------------------------------------------------------------
+  //Boton ATRAS de la aplicacion
+  //-------------------------------------------------------------
   const removeValue = async () => {
     try {
       //Borro los datos de STORE
@@ -239,6 +269,8 @@ const Form = ({navigation}) => {
     }
   };
   ///------------------------------
+  //Boton para CONFIRMAR envio de informacion TOTAL
+  //--------------------------------------------------
   const onPressConfirmar = () => {
     console.log('DENYOS----------------------------');
     const valorFinal = {
@@ -536,6 +568,11 @@ const Form = ({navigation}) => {
           </View>
         </View>
         {/* */}
+        <AlertConfirm
+          guardarFecha={guardarFecha}
+          guardarHoraInicial={guardarHoraInicial}
+          guardarHoraFinal={guardarHoraFinal}
+        />
       </ScrollView>
     </View>
   );

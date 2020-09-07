@@ -3,7 +3,11 @@ import React, {useReducer} from 'react';
 import alertContext from './alertContext';
 import alertReducer from './alertReducer';
 //Importamos los types
-import {CAMBIAR_ESTADO_ERROR, CAMBIAR_ESTADO_LOADING} from '../../type/index';
+import {
+  CAMBIAR_ESTADO_ERROR,
+  CAMBIAR_ESTADO_LOADING,
+  CAMBIAR_ESTADO_CONFIRM,
+} from '../../type/index';
 //--------------------------------------------------------
 const AlertState = (props) => {
   const initialState = {
@@ -12,6 +16,10 @@ const AlertState = (props) => {
       mensaje: null,
     },
     alertloading: false,
+    alertconfirm: {
+      estado: false,
+      valor: null,
+    },
   };
 
   const [state, dispatch] = useReducer(alertReducer, initialState);
@@ -30,13 +38,24 @@ const AlertState = (props) => {
       payload: valor,
     });
   };
+  //
+  const funcionAlertConfirm = (valor) => {
+    dispatch({
+      type: CAMBIAR_ESTADO_CONFIRM,
+      payload: valor,
+    });
+  };
+  //
+
   return (
     <alertContext.Provider
       value={{
         alerterror: state.alerterror,
         alertloading: state.alertloading,
+        alertconfirm: state.alertconfirm,
         funcionAlertError,
         funcionAlertLoading,
+        funcionAlertConfirm,
       }}>
       {props.children}
     </alertContext.Provider>

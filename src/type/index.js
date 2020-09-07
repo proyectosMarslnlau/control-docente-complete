@@ -4,6 +4,8 @@ export const PRUEBA = 'PRUEBA';
 //----------------------------------
 export const CAMBIAR_ESTADO_ERROR = 'CAMBIAR_ESTADO_ERROR';
 export const CAMBIAR_ESTADO_LOADING = 'CAMBIAR_ESTADO_LOADING';
+export const CAMBIAR_ESTADO_CONFIRM = 'CAMBIAR_ESTADO_CONFIRM';
+export const CAMBIAR_PRESION = 'CAMBIAR_PRESION';
 //----------------------------------
 //LOGIN
 //----------------------------------
