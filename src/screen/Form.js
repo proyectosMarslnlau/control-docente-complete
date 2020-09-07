@@ -16,8 +16,9 @@ import formContext from '../context/form/formContext';
 // -------------------- REACT NATIVE ELEMENTS ------------
 import {Button, Input, Slider, CheckBox} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-//-----------------------------------------------------------------
+//--------------------- STORE-------------------------------
 import AsyncStorage from '@react-native-community/async-storage';
+import {getDataTime, storeDataTime} from '../resource/js/StoreTime';
 //-------------------- MEDIDAS -----------------------
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../resource/js/Device';
 //----------------------------------------------------------------
@@ -41,8 +42,7 @@ const Form = ({navigation}) => {
     funcionPeticionHoraFinal,
     funcionEnviarDatos,
   } = useContext(formContext);
-  console.log('INICIAL');
-  console.log(datos);
+
   //--------------------------------------------------------------
   //EXTRAER LOS DATOS DE FORMULARIO
   const [materia, guardarMateria] = useState('Seleccione una Materia');
@@ -85,8 +85,7 @@ const Form = ({navigation}) => {
   };
   // ONPRESS OBTENER FECHA
   const onPressFecha = () => {
-    console.log('FECHA----------------------------');
-    const valorFinal = {
+    const valorStore = {
       materia: materia,
       titulo: titulo,
       cantidad: cantidad,
@@ -96,10 +95,9 @@ const Form = ({navigation}) => {
       avance: avance,
       respaldo: respaldo,
       horafinal: horafinal,
-      foto: foto,
       observacion: observacion,
     };
-
+    storeDataTime(valorStore);
     funcionPeticionFecha().then((date) => {
       guardarFecha({
         estado: true,
@@ -129,6 +127,9 @@ const Form = ({navigation}) => {
 
   //----------------------------------------------------------------
   useEffect(() => {
+    getDataTime().then((item) => {
+      console.log(item);
+    });
     //Peticion de seleccion de materias para los SELECT
     funcionPeticionMateriasDocente(identificador);
     funcionPeticionPlataformas();

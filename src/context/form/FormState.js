@@ -8,6 +8,7 @@ import {
   PETICION_MATERIAS,
   PETICION_PLATAFORMAS,
   PETICION_FECHA,
+  ACTUALIZAR_STORE,
 } from '../../type/index';
 
 //-----------------------------
@@ -69,9 +70,6 @@ const FormState = (props) => {
       const urlMateriasPlataformas = `http://localhost:5000/plataformas`;
       const peticion = await axios.get(urlMateriasPlataformas);
       const respuestaLogin = peticion.data;
-      console.log(respuestaLogin.length);
-      console.log(respuestaLogin);
-
       if (respuestaLogin.length !== 0) {
         dispatch({
           type: PETICION_PLATAFORMAS,
@@ -88,7 +86,7 @@ const FormState = (props) => {
       const urlFecha = `http://localhost:5000/date`;
       const peticion = await axios.get(urlFecha);
       const respuestaFecha = peticion.data;
-      console.log(respuestaFecha);
+
       if (Object.entries(respuestaFecha).length !== 0) {
         return respuestaFecha.fecha;
       }
@@ -101,7 +99,7 @@ const FormState = (props) => {
       const urlTimeStart = `http://localhost:5000/timeStart`;
       const peticion = await axios.get(urlTimeStart);
       const respuestaTime = peticion.data;
-      console.log(respuestaTime);
+
       if (Object.entries(respuestaTime).length !== 0) {
         return respuestaTime.time;
       }
@@ -134,6 +132,12 @@ const FormState = (props) => {
       console.log(error);
     }
   };
+  const funcionActualizarStore = (valors) => {
+    dispatch({
+      type: ACTUALIZAR_STORE,
+      payload: valor,
+    });
+  };
   return (
     <formContext.Provider
       value={{
@@ -146,6 +150,7 @@ const FormState = (props) => {
         funcionPeticionHoraInicial,
         funcionPeticionHoraFinal,
         funcionEnviarDatos,
+        funcionActualizarStore,
       }}>
       {props.children}
     </formContext.Provider>
