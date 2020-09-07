@@ -5,7 +5,7 @@ import ImagePicker from 'react-native-image-picker';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //
-const Camera = () => {
+const Camera = ({foto, guardarFoto}) => {
   //------------------------------------------------------------
   /*useEffect(() => {
     if (reiniciar !== false) {
@@ -19,7 +19,7 @@ const Camera = () => {
     resourcePath: {},
   });
 
-  if (Object.keys(state.resourcePath).length === 0) {
+  if (Object.keys(foto.resourcePath).length === 0) {
     console.log('vacio');
   } else {
     console.log('revisar');
@@ -31,6 +31,8 @@ const Camera = () => {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Buscar en mis Archivos',
       chooseFromLibraryButtonTitle: null,
+      quality: 0.3,
+      maxWidth: 500,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -52,7 +54,7 @@ const Camera = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        guardarState({
+        guardarFoto({
           resourcePath: source,
         });
         console.log('LENNY LAURA VALENCIA');
@@ -63,7 +65,7 @@ const Camera = () => {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        {Object.keys(state.resourcePath).length === 0 ? (
+        {Object.keys(foto.resourcePath).length === 0 ? (
           <Image
             source={require('../resource/img/images.png')}
             style={{width: 100, height: 100, marginBottom: 5}}
@@ -71,25 +73,25 @@ const Camera = () => {
         ) : (
           <Image
             source={{
-              uri: 'data:image/jpeg;base64,' + state.resourcePath.data,
+              uri: 'data:image/jpeg;base64,' + foto.resourcePath.data,
             }}
             style={{width: 100, height: 100, marginBottom: 5}}
           />
         )}
 
-        {Object.keys(state.resourcePath).length === 0 ? (
+        {Object.keys(foto.resourcePath).length === 0 ? (
           <Image
             source={require('../resource/img/images.png')}
             style={{width: 200, height: 200, marginBottom: 5}}
           />
         ) : (
           <Image
-            source={{uri: state.resourcePath.uri}}
+            source={{uri: foto.resourcePath.uri}}
             style={{width: 200, height: 200, marginBottom: 5}}
           />
         )}
 
-        <Text style={{alignItems: 'center'}}>{state.resourcePath.uri}</Text>
+        <Text style={{alignItems: 'center'}}>{foto.resourcePath.uri}</Text>
 
         <Button
           onPress={selectFile}

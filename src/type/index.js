@@ -13,3 +13,9 @@ export const COPIAR_USUARIO = 'COPIAR_USUARIO';
 //-----------------------------------
 //FORMULARIO
 //------------------------------------
+export const PETICION_MATERIAS = 'PETICION_MATERIAS';
+export const PETICION_PLATAFORMAS = 'PETICION_PLATAFORMAS';
+export const PETICION_FECHA = 'PETICION_FECHA';
+export const PETICION_HORA_INICIAL = 'PETICION_HORA_INICIAL';
+export const PETICION_HORA_FINAL = 'PETICION_HORA_FINAL';
+export const PETICION_REGISTRAR = 'PETICION_REGISTRAR';

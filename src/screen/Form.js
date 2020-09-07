@@ -21,31 +21,118 @@ import AsyncStorage from '@react-native-community/async-storage';
 //-------------------- MEDIDAS -----------------------
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../resource/js/Device';
 //----------------------------------------------------------------
-//ITEMS DE FORMULARIO
+//---------------ITEMS DE FORMULARIO -------
 import Select from '../item/Select';
+import SelectPlataform from '../item/SelectPlataform';
 import Camera from '../item/Camera';
 //----------------------------------
 //INICIO DE PROGRAMA
 //------------------------------------
 const Form = ({navigation}) => {
+  //Invocacion de datos de USE CONTEXT
   const {datosusuario, funcionCerrarSesion} = useContext(loginContext);
-  const {prueba} = useContext(formContext);
+  const {nombre, identificador} = datosusuario;
+  const {
+    datos,
+    funcionPeticionMateriasDocente,
+    funcionPeticionPlataformas,
+    funcionPeticionFecha,
+    funcionPeticionHoraInicial,
+    funcionPeticionHoraFinal,
+    funcionEnviarDatos,
+  } = useContext(formContext);
+  console.log('INICIAL');
+  console.log(datos);
   //--------------------------------------------------------------
-  //
-  const [fechaInicio, guardarFechaInicio] = useState({
-    aprobacion: false,
-    tiempo: '',
+  //EXTRAER LOS DATOS DE FORMULARIO
+  const [materia, guardarMateria] = useState('Seleccione una Materia');
+  const [titulo, guardarTitulo] = useState('');
+  const [cantidad, guardarCantidad] = useState('');
+  const [fecha, guardarFecha] = useState({
+    estado: false,
+    fecha: '',
   });
-  const [botonInicio, guardarBotonInicio] = useState({
-    aprobacion: false,
-    tiempo: '',
+  const [horainicial, guardarHoraInicial] = useState({
+    estado: false,
+    horaini: '',
   });
-  const [botonFinal, guardarBotonFinal] = useState({
-    aprobacion: false,
-    tiempo: '',
+  const [plataforma, guardarPlataforma] = useState('Seleccione una Plataforma');
+  const [avance, guardarAvance] = useState(10);
+  const [respaldo, guardarRespaldo] = useState(false);
+  const [horafinal, guardarHoraFinal] = useState({
+    estado: false,
+    horafin: '',
   });
+  const [foto, guardarFoto] = useState({
+    resourcePath: {},
+  });
+  const [observacion, guardarObservacion] = useState('');
+  //------------------------------------------------------------
+  //ESTADOS FINALES
+  //------------------------------------------------------------
+  const [valor, guardarValor] = useState({});
+  //Extraer informacion de TITULO
+  const onChangeTitulo = (valor) => {
+    guardarTitulo(valor);
+  };
+  //Extraer informacion de cantidad
+  const onChangeCantidad = (valor) => {
+    guardarCantidad(valor);
+  };
+  //Extraer informacion de ENTRADA OBSERVACIONES
+  const onChangeObservacion = (valor) => {
+    guardarObservacion(valor);
+  };
+  // ONPRESS OBTENER FECHA
+  const onPressFecha = () => {
+    console.log('FECHA----------------------------');
+    const valorFinal = {
+      materia: materia,
+      titulo: titulo,
+      cantidad: cantidad,
+      fecha: fecha,
+      horaini: horainicial,
+      plataforma: plataforma,
+      avance: avance,
+      respaldo: respaldo,
+      horafinal: horafinal,
+      foto: foto,
+      observacion: observacion,
+    };
+
+    funcionPeticionFecha().then((date) => {
+      guardarFecha({
+        estado: true,
+        fecha: date,
+      });
+    });
+  };
+  // ONPRESS OBTENER HORA INICIAL
+  const onPressHoraInicial = () => {
+    funcionPeticionHoraInicial().then((time) => {
+      guardarHoraInicial({
+        estado: true,
+        horaini: time,
+      });
+    });
+  };
+
+  // ONPRESS OBTENER HORA FINAL
+  const onPressHoraFinal = () => {
+    funcionPeticionHoraFinal().then((time) => {
+      guardarHoraFinal({
+        estado: true,
+        horafin: time,
+      });
+    });
+  };
+
   //----------------------------------------------------------------
   useEffect(() => {
+    //Peticion de seleccion de materias para los SELECT
+    funcionPeticionMateriasDocente(identificador);
+    funcionPeticionPlataformas();
+    //--------------------------------------------------
     const backAction = () => {
       Alert.alert('Hold on!', 'Are you sure you want to go back?', [
         {
@@ -87,6 +174,26 @@ const Form = ({navigation}) => {
       console.log(e);
     }
   };
+  ///------------------------------
+  const onPressConfirmar = () => {
+    console.log('DENYOS----------------------------');
+    const valorFinal = {
+      materia: materia,
+      titulo: titulo,
+      cantidad: cantidad,
+      fecha: fecha,
+      horaini: horainicial,
+      plataforma: plataforma,
+      avance: avance,
+      respaldo: respaldo,
+      horafinal: horafinal,
+      foto: foto,
+      observacion: observacion,
+    };
+    funcionEnviarDatos(valorFinal);
+
+    console.log(valorFinal);
+  };
   //------------------------------------------------
   return (
     <View>
@@ -98,13 +205,11 @@ const Form = ({navigation}) => {
           <View style={styles.seccion_1}>
             <View style={styles.entradas}>
               <Text style={styles.left}>BIENVENIDO : </Text>
-              <Text style={styles.titulo_docente}>
-                Ing Juan Carlos Machicao
-              </Text>
+              <Text style={styles.titulo_docente}>{nombre}</Text>
             </View>
             <View style={styles.entradas}>
               <Text style={styles.left}>Materias Actuales del docente : </Text>
-              <Select />
+              <Select materia={materia} guardarMateria={guardarMateria} />
             </View>
             <View style={styles.entradas}>
               <Text style={styles.left}>Tema Estudiado </Text>
@@ -114,6 +219,8 @@ const Form = ({navigation}) => {
                   multiline={true}
                   numberOfLines={2}
                   style={styles.tema_input}
+                  onChangeText={onChangeTitulo}
+                  value={titulo}
                 />
               </View>
             </View>
@@ -125,6 +232,7 @@ const Form = ({navigation}) => {
                   keyboardType="numeric"
                   placeholder="Cantidad"
                   leftIcon={<Icon name="user" size={15} color="white" />}
+                  onChangeText={onChangeCantidad}
                 />
               </View>
             </View>
@@ -132,7 +240,7 @@ const Form = ({navigation}) => {
             <View style={styles.entradas}>
               <Text style={styles.left}>Obtener Fecha de Clase</Text>
               <View style={styles.right}>
-                {fechaInicio.aprobacion ? (
+                {fecha.estado ? (
                   <Button
                     icon={
                       <Icon
@@ -142,7 +250,7 @@ const Form = ({navigation}) => {
                         style={styles.icono}
                       />
                     }
-                    title="wert"
+                    title={fecha.fecha}
                     style={styles.boton}
                     buttonStyle={{
                       backgroundColor: '#64C55F',
@@ -170,7 +278,7 @@ const Form = ({navigation}) => {
                     titleStyle={{
                       fontFamily: 'Exo2-Medium',
                     }}
-                    //onPress={onPressFecha}
+                    onPress={onPressFecha}
                   />
                 )}
               </View>
@@ -178,7 +286,7 @@ const Form = ({navigation}) => {
             <View style={styles.entradas}>
               <Text style={styles.left}>Obtener Hora Inicial de Clase </Text>
               <View style={styles.right}>
-                {botonInicio.aprobacion ? (
+                {horainicial.estado ? (
                   <Button
                     icon={
                       <Icon
@@ -188,7 +296,7 @@ const Form = ({navigation}) => {
                         style={styles.icono}
                       />
                     }
-                    title="dddddddddd"
+                    title={horainicial.horaini}
                     style={styles.boton}
                     buttonStyle={{
                       backgroundColor: '#64C55F',
@@ -216,28 +324,31 @@ const Form = ({navigation}) => {
                     titleStyle={{
                       fontFamily: 'Exo2-Medium',
                     }}
-                    //onPress={onPressHoraInicio}
+                    onPress={onPressHoraInicial}
                   />
                 )}
               </View>
             </View>
             <View style={styles.entradas}>
               <Text style={styles.left}>Plataforma utilizada </Text>
-              <Select />
+              <SelectPlataform
+                plataforma={plataforma}
+                guardarPlataforma={guardarPlataforma}
+              />
             </View>
 
             <View style={styles.entradas}>
               <Text style={styles.left}>Avance : </Text>
               <View style={styles.right}>
                 <Slider
-                  value={10}
-                  //onValueChange={guardarSlider}
+                  value={avance}
+                  onValueChange={guardarAvance}
                   maximumValue={100}
                   minimumValue={0}
                   step={1}
                   style={styles.slider}
                 />
-                <Text style={styles.titulo_progreso}>Progreso: %</Text>
+                <Text style={styles.titulo_progreso}>Progreso: {avance}%</Text>
               </View>
             </View>
 
@@ -246,8 +357,8 @@ const Form = ({navigation}) => {
               <View>
                 <CheckBox
                   title="Click Aqui"
-                  checked={true}
-                  //onPress={() => guardarCheck(!check)}
+                  checked={respaldo}
+                  onPress={() => guardarRespaldo(!respaldo)}
                   containerStyle={styles.check}
                   textStyle={styles.text_check}
                   checkedColor={'white'}
@@ -257,7 +368,7 @@ const Form = ({navigation}) => {
             <View style={styles.entradas}>
               <Text style={styles.left}>Obtener Hora Final de Clase </Text>
               <View style={styles.right}>
-                {botonFinal.aprobacion ? (
+                {horafinal.estado ? (
                   <Button
                     icon={
                       <Icon
@@ -267,7 +378,7 @@ const Form = ({navigation}) => {
                         style={styles.icono}
                       />
                     }
-                    title={botonFinal.tiempo}
+                    title={horafinal.horafin}
                     style={styles.boton}
                     buttonStyle={{
                       backgroundColor: '#64C55F',
@@ -295,12 +406,24 @@ const Form = ({navigation}) => {
                     titleStyle={{
                       fontFamily: 'Exo2-Medium',
                     }}
-                    //onPress={onPressHoraFinal}
+                    onPress={onPressHoraFinal}
                   />
                 )}
               </View>
             </View>
-            <Camera />
+            <View style={styles.entradas}>
+              <Text style={styles.left}>Observaciones </Text>
+              <View style={styles.right}>
+                <Input
+                  placeholder="Observaciones de sesion"
+                  multiline={true}
+                  numberOfLines={2}
+                  style={styles.tema_input}
+                  onChangeText={onChangeObservacion}
+                />
+              </View>
+            </View>
+            <Camera foto={foto} guardarFoto={guardarFoto} />
           </View>
           <View style={styles.seccion_3}>
             <Button
@@ -322,7 +445,7 @@ const Form = ({navigation}) => {
               titleStyle={{
                 fontFamily: 'Exo2-Medium',
               }}
-              //onPress={confirmar}
+              onPress={onPressConfirmar}
             />
             <Button
               icon={
@@ -343,7 +466,7 @@ const Form = ({navigation}) => {
               titleStyle={{
                 fontFamily: 'Exo2-Medium',
               }}
-              //onPress={cancelar}
+              onPress={removeValue}
             />
           </View>
         </View>

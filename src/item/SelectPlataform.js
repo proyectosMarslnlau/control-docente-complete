@@ -7,22 +7,26 @@ import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../resource/js/Device';
 //-------------------- CONTEXT -------------------------
 import formContext from '../context/form/formContext';
 //---------------------------------------------------------
-const Select = ({materia, guardarMateria}) => {
+const SelectPlataform = ({plataforma, guardarPlataforma}) => {
   //-----------Invamos las form
-  const {materiasactuales} = useContext(formContext);
-  //------------------------------------------------------
+  const {plataformas} = useContext(formContext);
+  //------ State LOCALES -----
   return (
     <Picker
-      selectedValue={materia}
+      selectedValue={plataforma}
       style={styles.selector}
-      onValueChange={(itemValue, itemIndex) => guardarMateria(itemValue)}>
+      onValueChange={(itemValue, itemIndex) => guardarPlataforma(itemValue)}>
       <Picker.Item
         label="Seleccion una Opcion"
         value="default"
         itemStyle={styles.options}
       />
-      {materiasactuales.map((item) => (
-        <Picker.Item label={item.materia} value={item.sigla} key={item.id} />
+      {plataformas.map((item) => (
+        <Picker.Item
+          label={item.plataforma}
+          value={item.plataforma}
+          key={item.id}
+        />
       ))}
     </Picker>
   );
@@ -43,4 +47,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
   },
 });
-export default Select;
+export default SelectPlataform;
