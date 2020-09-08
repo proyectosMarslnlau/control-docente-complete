@@ -17,8 +17,8 @@ const SelectPlataform = ({plataforma, guardarPlataforma}) => {
       style={styles.selector}
       onValueChange={(itemValue, itemIndex) => guardarPlataforma(itemValue)}>
       <Picker.Item
-        label="Seleccion una Opcion"
-        value="default"
+        label={plataforma}
+        value={plataforma}
         itemStyle={styles.options}
       />
       {plataformas.map((item) => (

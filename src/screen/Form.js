@@ -29,6 +29,8 @@ import Select from '../item/Select';
 import SelectPlataform from '../item/SelectPlataform';
 import Camera from '../item/Camera';
 import AlertConfirm from '../item/AlertConfirm';
+import AlertError from '../item/AlertError';
+import AlertSuccess from '../item/AlertSuccess';
 //----------------------------------
 //INICIO DE PROGRAMA
 //------------------------------------
@@ -37,23 +39,26 @@ const Form = ({navigation}) => {
   const {datosusuario, funcionCerrarSesion} = useContext(loginContext);
   const {nombre, identificador} = datosusuario;
   const {
-    datos,
+    reset,
+    datosiniciales,
     funcionPeticionMateriasDocente,
     funcionPeticionPlataformas,
-    funcionPeticionFecha,
-    funcionPeticionHoraInicial,
-    funcionPeticionHoraFinal,
-    funcionEnviarDatos,
     funcionActualizarStore,
+    funcionReset,
   } = useContext(formContext);
-  const {alertconfirm, funcionAlertConfirm} = useContext(alertContext);
+  const {
+    funcionAlertConfirm,
+    funcionAlertError,
+    funcionAlertSuccess,
+  } = useContext(alertContext);
   //--------------------------------------------------------------
 
   useEffect(() => {
     //Obtiene del store y actualiza los STATE
+
     getDataTime().then((item) => {
+      console.log(item);
       if (item !== null) {
-        console.log(item);
         guardarMateria(item.materia);
         guardarTitulo(item.titulo);
         guardarCantidad(item.cantidad);
@@ -142,12 +147,6 @@ const Form = ({navigation}) => {
       valor: 1,
     };
     funcionAlertConfirm(date);
-    /*funcionPeticionFecha().then((date) => {
-      guardarFecha({
-        estado: true,
-        fecha: date,
-      });
-    });*/
   };
   // ONPRESS OBTENER HORA INICIAL
   const onPressHoraInicial = () => {
@@ -156,13 +155,6 @@ const Form = ({navigation}) => {
       valor: 2,
     };
     funcionAlertConfirm(date);
-    /*
-    funcionPeticionHoraInicial().then((time) => {
-      guardarHoraInicial({
-        estado: true,
-        horaini: time,
-      });
-    });*/
   };
 
   // ONPRESS OBTENER HORA FINAL
@@ -172,13 +164,6 @@ const Form = ({navigation}) => {
       valor: 3,
     };
     funcionAlertConfirm(date);
-    /*
-    funcionPeticionHoraFinal().then((time) => {
-      guardarHoraFinal({
-        estado: true,
-        horafin: time,
-      });
-    });*/
   };
 
   //----------------------------------------------------------------
@@ -199,7 +184,6 @@ const Form = ({navigation}) => {
         observacion: observacion,
       };
       storeDataTime(valorStore);
-      funcionActualizarStore(valorStore);
     }
   }, [fecha.estado]);
   //----------------------------------------------------------------
@@ -220,7 +204,6 @@ const Form = ({navigation}) => {
         observacion: observacion,
       };
       storeDataTime(valorStore);
-      funcionActualizarStore(valorStore);
     }
   }, [horainicial.estado]);
   //----------------------------------------------------------------
@@ -241,9 +224,33 @@ const Form = ({navigation}) => {
         observacion: observacion,
       };
       storeDataTime(valorStore);
-      funcionActualizarStore(valorStore);
+      //Guarda en variable DATE del STATEFORM
     }
   }, [horafinal.estado]);
+  //---------------------------------------------------------------
+  //Boton ATRAS de la aplicacion
+  //-------------------------------------------------------------
+  useEffect(() => {
+    if (reset !== false) {
+      guardarMateria(datosiniciales.materia);
+      guardarTitulo(datosiniciales.titulo);
+      guardarCantidad(datosiniciales.cantidad);
+      guardarFecha(datosiniciales.fecha);
+      guardarHoraInicial(datosiniciales.horaini);
+      guardarPlataforma(datosiniciales.plataforma);
+      guardarAvance(datosiniciales.avance);
+      guardarRespaldo(datosiniciales.respaldo);
+      guardarHoraFinal(datosiniciales.horafinal);
+      guardarObservacion(datosiniciales.observacion);
+      guardarFoto(datosiniciales.foto);
+      funcionReset(false);
+      let valorSucess = {
+        estado: true,
+        mensaje: 'Registro Enviado Correctamente',
+      };
+      funcionAlertSuccess(valorSucess);
+    }
+  }, [reset]);
   //---------------------------------------------------------------
   //Boton ATRAS de la aplicacion
   //-------------------------------------------------------------
@@ -260,9 +267,20 @@ const Form = ({navigation}) => {
       };
       //Invoco la funcion de cerrar sesion del CONTEXT
       funcionCerrarSesion(valor);
+      let valorSucess = {
+        estado: true,
+        mensaje: 'Hasta pronto',
+      };
+      funcionAlertSuccess(valorSucess);
       //Realizao la redireccion al LOGIN nuevamente
-      navigation.navigate('login');
-      console.log('Done.');
+      setTimeout(() => {
+        let valorSucess = {
+          stado: false,
+          mensaje: null,
+        };
+        funcionAlertSuccess(valorSucess);
+        navigation.navigate('login');
+      }, 1000);
     } catch (e) {
       // remove error
       console.log(e);
@@ -286,9 +304,34 @@ const Form = ({navigation}) => {
       foto: foto,
       observacion: observacion,
     };
-    funcionEnviarDatos(valorFinal);
-
-    console.log(valorFinal);
+    //Saneamiento de variables de entrada
+    if (
+      materia.trim() === 'Seleccione una Materia' ||
+      titulo.trim() === '' ||
+      cantidad.trim() === '' ||
+      fecha.fecha.trim() === '' ||
+      horainicial.horaini.trim() === '' ||
+      plataforma.trim() === 'Seleccione una Plataforma' ||
+      horafinal.horafin.trim() === '' ||
+      Object.keys(foto.resourcePath).length === 0
+    ) {
+      let valorError = {
+        estado: true,
+        mensaje: 'Valores Vacios Verifique y ingresa los datos nuevamente',
+      };
+      funcionAlertError(valorError);
+    } else {
+      //funcionEnviarDatos(valorFinal);
+      const date = {
+        estado: true,
+        valor: 10,
+      };
+      //Colocamos los valores en el state designado para ello
+      funcionActualizarStore(valorFinal);
+      //Enviamos la informacion de apertura para el ALERT DE confirmacion
+      funcionAlertConfirm(date);
+      //console.log(valorFinal);
+    }
   };
   //------------------------------------------------
   return (
@@ -517,6 +560,7 @@ const Form = ({navigation}) => {
                   numberOfLines={2}
                   style={styles.tema_input}
                   onChangeText={onChangeObservacion}
+                  value={observacion}
                 />
               </View>
             </View>
@@ -553,7 +597,7 @@ const Form = ({navigation}) => {
                   style={styles.icono}
                 />
               }
-              title="CANCELAR"
+              title="CERRAR SESION"
               style={styles.boton_envio}
               buttonStyle={{
                 backgroundColor: '#C45E3B',
@@ -573,6 +617,8 @@ const Form = ({navigation}) => {
           guardarHoraInicial={guardarHoraInicial}
           guardarHoraFinal={guardarHoraFinal}
         />
+        <AlertError />
+        <AlertSuccess />
       </ScrollView>
     </View>
   );

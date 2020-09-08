@@ -2,8 +2,8 @@
 import {
   PETICION_MATERIAS,
   PETICION_PLATAFORMAS,
-  PETICION_FECHA,
   ACTUALIZAR_STORE,
+  RESET_STORE,
 } from '../../type/index';
 //
 import {storeDataTime} from '../../resource/js/StoreTime';
@@ -24,6 +24,12 @@ export default (state, action) => {
       return {
         ...state,
         datos: action.payload,
+      };
+
+    case RESET_STORE:
+      return {
+        ...state,
+        reset: action.payload,
       };
     default:
       return state;

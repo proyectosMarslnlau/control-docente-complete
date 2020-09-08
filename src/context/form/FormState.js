@@ -9,6 +9,8 @@ import {
   PETICION_PLATAFORMAS,
   PETICION_FECHA,
   ACTUALIZAR_STORE,
+  RESET_STORE,
+  CAMBIAR_ESTADO_EXITOSO,
 } from '../../type/index';
 
 //-----------------------------
@@ -19,8 +21,9 @@ const FormState = (props) => {
   const initialState = {
     materiasactuales: [],
     plataformas: [],
-    datos: {
-      materia: 'Seleccione una Materiaaaa',
+    datos: {},
+    datosiniciales: {
+      materia: 'Seleccione una Materia',
       titulo: '',
       cantidad: '',
       fecha: {
@@ -43,6 +46,7 @@ const FormState = (props) => {
       },
       observacion: '',
     },
+    reset: false,
   };
   //-----------------------
   const [state, dispatch] = useReducer(formReducer, initialState);
@@ -127,7 +131,7 @@ const FormState = (props) => {
         store: valor,
       });
       const respuestaEnvio = envio.data;
-      console.log(respuestaEnvio);
+      return 'correcto';
     } catch (error) {
       console.log(error);
     }
@@ -138,12 +142,21 @@ const FormState = (props) => {
       payload: valor,
     });
   };
+  //
+  const funcionReset = (valor) => {
+    dispatch({
+      type: RESET_STORE,
+      payload: valor,
+    });
+  };
   return (
     <formContext.Provider
       value={{
         materiasactuales: state.materiasactuales,
         plataformas: state.plataformas,
         datos: state.datos,
+        datosiniciales: state.datosiniciales,
+        reset: state.reset,
         funcionPeticionMateriasDocente,
         funcionPeticionPlataformas,
         funcionPeticionFecha,
@@ -151,6 +164,7 @@ const FormState = (props) => {
         funcionPeticionHoraFinal,
         funcionEnviarDatos,
         funcionActualizarStore,
+        funcionReset,
       }}>
       {props.children}
     </formContext.Provider>

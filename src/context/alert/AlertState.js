@@ -7,6 +7,7 @@ import {
   CAMBIAR_ESTADO_ERROR,
   CAMBIAR_ESTADO_LOADING,
   CAMBIAR_ESTADO_CONFIRM,
+  CAMBIAR_ESTADO_EXITOSO,
 } from '../../type/index';
 //--------------------------------------------------------
 const AlertState = (props) => {
@@ -19,6 +20,10 @@ const AlertState = (props) => {
     alertconfirm: {
       estado: false,
       valor: null,
+    },
+    alertsuccess: {
+      estado: false,
+      mensaje: null,
     },
   };
 
@@ -46,16 +51,23 @@ const AlertState = (props) => {
     });
   };
   //
-
+  const funcionAlertSuccess = (valor) => {
+    dispatch({
+      type: CAMBIAR_ESTADO_EXITOSO,
+      payload: valor,
+    });
+  };
   return (
     <alertContext.Provider
       value={{
         alerterror: state.alerterror,
         alertloading: state.alertloading,
         alertconfirm: state.alertconfirm,
+        alertsuccess: state.alertsuccess,
         funcionAlertError,
         funcionAlertLoading,
         funcionAlertConfirm,
+        funcionAlertSuccess,
       }}>
       {props.children}
     </alertContext.Provider>

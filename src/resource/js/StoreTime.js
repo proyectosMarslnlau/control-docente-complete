@@ -21,4 +21,13 @@ const getDataTime = async () => {
   }
 };
 
-export {storeDataTime, getDataTime};
+const removeDataTime = async () => {
+  try {
+    await AsyncStorage.removeItem('@storage_date_time');
+    return true;
+  } catch (exception) {
+    return false;
+  }
+};
+
+export {storeDataTime, getDataTime, removeDataTime};

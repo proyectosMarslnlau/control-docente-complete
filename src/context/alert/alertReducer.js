@@ -3,6 +3,7 @@ import {
   CAMBIAR_ESTADO_ERROR,
   CAMBIAR_ESTADO_LOADING,
   CAMBIAR_ESTADO_CONFIRM,
+  CAMBIAR_ESTADO_EXITOSO,
 } from '../../type/index';
 //
 export default (state, action) => {
@@ -22,7 +23,11 @@ export default (state, action) => {
         ...state,
         alertconfirm: action.payload,
       };
-
+    case CAMBIAR_ESTADO_EXITOSO:
+      return {
+        ...state,
+        alertsuccess: action.payload,
+      };
     default:
       return state;
   }
