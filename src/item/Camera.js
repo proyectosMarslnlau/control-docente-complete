@@ -20,7 +20,7 @@ const Camera = ({foto, guardarFoto}) => {
   });
 
   if (Object.keys(foto.resourcePath).length === 0) {
-    console.log('vacio');
+    //console.log('vacio');
   } else {
     console.log('revisar');
   }

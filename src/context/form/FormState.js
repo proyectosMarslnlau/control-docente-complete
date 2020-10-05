@@ -54,30 +54,34 @@ const FormState = (props) => {
   //FUNCION de peticion de materias
   const funcionPeticionMateriasDocente = async (valor) => {
     try {
-      const urlMateriasDocente = `http://localhost:5000/docente?usuario=${valor}`;
-      const peticion = await axios.get(urlMateriasDocente);
+      const urlMateriasDocente = `http://localhost:4000/api/teacher`;
+      const peticion = await axios.post(urlMateriasDocente, {
+        carnet: valor,
+      });
       const respuestaLogin = peticion.data;
 
-      if (respuestaLogin[0].materias.length !== 0) {
+      if (respuestaLogin.request.length !== 0) {
         dispatch({
           type: PETICION_MATERIAS,
-          payload: respuestaLogin[0].materias,
+          payload: respuestaLogin.request,
         });
       }
     } catch (error) {
+      console.log('ERROR DE LENNY');
       console.log(error);
     }
   };
   //
   const funcionPeticionPlataformas = async () => {
     try {
-      const urlMateriasPlataformas = `http://localhost:5000/plataformas`;
-      const peticion = await axios.get(urlMateriasPlataformas);
+      const urlMateriasPlataformas = `http://localhost:4000/api/plataform`;
+      const peticion = await axios.post(urlMateriasPlataformas);
       const respuestaLogin = peticion.data;
-      if (respuestaLogin.length !== 0) {
+
+      if (respuestaLogin.request.length !== 0) {
         dispatch({
           type: PETICION_PLATAFORMAS,
-          payload: respuestaLogin,
+          payload: respuestaLogin.request,
         });
       }
     } catch (error) {
@@ -87,12 +91,11 @@ const FormState = (props) => {
   //
   const funcionPeticionFecha = async () => {
     try {
-      const urlFecha = `http://localhost:5000/date`;
-      const peticion = await axios.get(urlFecha);
+      const urlFecha = `http://localhost:4000/api/date`;
+      const peticion = await axios.post(urlFecha);
       const respuestaFecha = peticion.data;
-
       if (Object.entries(respuestaFecha).length !== 0) {
-        return respuestaFecha.fecha;
+        return respuestaFecha.response;
       }
     } catch (error) {
       console.log(error);
@@ -100,12 +103,12 @@ const FormState = (props) => {
   };
   const funcionPeticionHoraInicial = async () => {
     try {
-      const urlTimeStart = `http://localhost:5000/timeStart`;
-      const peticion = await axios.get(urlTimeStart);
+      const urlTimeStart = `http://localhost:4000/api/timerstart`;
+      const peticion = await axios.post(urlTimeStart);
       const respuestaTime = peticion.data;
-
+      console.log(respuestaTime);
       if (Object.entries(respuestaTime).length !== 0) {
-        return respuestaTime.time;
+        return respuestaTime.response;
       }
     } catch (error) {
       console.log(error);
@@ -113,12 +116,12 @@ const FormState = (props) => {
   };
   const funcionPeticionHoraFinal = async () => {
     try {
-      const urlTimeEnd = `http://localhost:5000/timeEnd`;
-      const peticion = await axios.get(urlTimeEnd);
+      const urlTimeEnd = `http://localhost:4000/api/timerend`;
+      const peticion = await axios.post(urlTimeEnd);
       const respuestaTime = peticion.data;
-      console.log(respuestaTime);
+
       if (Object.entries(respuestaTime).length !== 0) {
-        return respuestaTime.time;
+        return respuestaTime.response;
       }
     } catch (error) {
       console.log(error);

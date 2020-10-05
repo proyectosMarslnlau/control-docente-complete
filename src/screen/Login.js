@@ -37,8 +37,6 @@ const Login = ({navigation}) => {
     getData().then((key) => {
       //Verificamos si el valor del STORE esta vacio
       if (key !== null) {
-        console.log('datos guardados');
-        console.log(key);
         //Verificamos si el estado esta desbloqueado
         if (key.estado === 'unlocked') {
           //Debemos copiar los datos del STORE al CONTEXT

@@ -26,16 +26,18 @@ const LoginState = (props) => {
     //Cliente AXIOS
     //--------Simulacion de cambios de estado ------
     try {
-      const urlLogin = `http://localhost:5000/dates?usuario=${user}&password=${pass}`;
-      const peticion = await axios.get(urlLogin);
+      const urlLogin = `http://localhost:4000/api`;
+      const peticion = await axios.post(urlLogin, {
+        user: user,
+        pass: pass,
+      });
       const respuestaLogin = peticion.data;
-      console.log(respuestaLogin);
       if (respuestaLogin.length !== 0) {
         //Anade el valor de unlocked
-        respuestaLogin[0].estado = 'unlocked';
+        respuestaLogin.msg[0].estado = 'unlocked';
         dispatch({
           type: LOGIN_USUARIO,
-          payload: respuestaLogin[0],
+          payload: respuestaLogin.msg[0],
         });
         return 'correcto';
       } else {
