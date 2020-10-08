@@ -31,8 +31,8 @@ const Camera = ({foto, guardarFoto}) => {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Buscar en mis Archivos',
       chooseFromLibraryButtonTitle: null,
-      quality: 0.3,
-      maxWidth: 500,
+      quality: 0.8,
+      maxWidth: 600,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -54,6 +54,7 @@ const Camera = ({foto, guardarFoto}) => {
         alert(res.customButton);
       } else {
         let source = res;
+        console.log(res);
         guardarFoto({
           resourcePath: source,
         });

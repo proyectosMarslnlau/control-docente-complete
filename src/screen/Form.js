@@ -303,6 +303,7 @@ const Form = ({navigation}) => {
       horafinal: horafinal,
       foto: foto,
       observacion: observacion,
+      identificador: identificador,
     };
     //Saneamiento de variables de entrada
     if (
