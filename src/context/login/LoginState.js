@@ -4,6 +4,7 @@ import loginReducer from './loginReducer';
 import loginContext from './loginContext';
 //-------------------------------------------
 import {LOGIN_USUARIO, CERRAR_USUARIO, COPIAR_USUARIO} from '../../type/index';
+import {url_peticion_informacion} from '../../resource/js/constants';
 //-----------------------------
 import axios from 'axios';
 //------------------------------------
@@ -26,15 +27,17 @@ const LoginState = (props) => {
     //Cliente AXIOS
     //--------Simulacion de cambios de estado ------
     try {
-      const urlLogin = `http://localhost:4000/api`;
+      const urlLogin = url_peticion_informacion;
       const peticion = await axios.post(urlLogin, {
         user: user,
         pass: pass,
       });
       const respuestaLogin = peticion.data;
-      if (respuestaLogin.length !== 0) {
+      console.log(respuestaLogin.msg.length)
+      if (respuestaLogin.msg.length !== 0) {
         //Anade el valor de unlocked
         respuestaLogin.msg[0].estado = 'unlocked';
+        console.log(respuestaLogin.msg[0])
         dispatch({
           type: LOGIN_USUARIO,
           payload: respuestaLogin.msg[0],

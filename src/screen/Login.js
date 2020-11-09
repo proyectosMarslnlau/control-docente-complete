@@ -100,7 +100,7 @@ const Login = ({navigation}) => {
       }, 1500);
     }
   };
-  //
+  //Reseteamos las entradas de USUARIO Y PASS
   const resetEntradas = () => {
     guardarPass('');
     guardarUser('');
@@ -121,7 +121,7 @@ const Login = ({navigation}) => {
           behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
           <View style={styles.seccion_1_2}>
             <Text style={styles.titulo_formulario}>
-              Ingrese sus Credencialesss
+              Ingrese sus Credenciales
             </Text>
             <Fragment>
               <View style={styles.entradas}>

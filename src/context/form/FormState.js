@@ -12,7 +12,14 @@ import {
   RESET_STORE,
   CAMBIAR_ESTADO_EXITOSO,
 } from '../../type/index';
-
+import {
+  url_peticion_datos_usuario,
+  url_peticion_datos_plataformas,
+  url_peticion_fecha,
+  url_peticion_hora_final,
+  url_envio_datos,
+  url_peticion_hora_inicial,
+} from '../../resource/js/constants';
 //-----------------------------
 import axios from 'axios';
 //-----------------------------------------------------
@@ -54,7 +61,7 @@ const FormState = (props) => {
   //FUNCION de peticion de materias
   const funcionPeticionMateriasDocente = async (valor) => {
     try {
-      const urlMateriasDocente = `http://localhost:4000/api/teacher`;
+      const urlMateriasDocente = url_peticion_datos_usuario;
       const peticion = await axios.post(urlMateriasDocente, {
         carnet: valor,
       });
@@ -74,7 +81,7 @@ const FormState = (props) => {
   //
   const funcionPeticionPlataformas = async () => {
     try {
-      const urlMateriasPlataformas = `http://localhost:4000/api/plataform`;
+      const urlMateriasPlataformas = url_peticion_datos_plataformas;
       const peticion = await axios.post(urlMateriasPlataformas);
       const respuestaLogin = peticion.data;
 
@@ -91,7 +98,7 @@ const FormState = (props) => {
   //
   const funcionPeticionFecha = async () => {
     try {
-      const urlFecha = `http://localhost:4000/api/date`;
+      const urlFecha = url_peticion_fecha;
       const peticion = await axios.post(urlFecha);
       const respuestaFecha = peticion.data;
       if (Object.entries(respuestaFecha).length !== 0) {
@@ -103,7 +110,7 @@ const FormState = (props) => {
   };
   const funcionPeticionHoraInicial = async () => {
     try {
-      const urlTimeStart = `http://localhost:4000/api/timerstart`;
+      const urlTimeStart = url_peticion_hora_inicial;
       const peticion = await axios.post(urlTimeStart);
       const respuestaTime = peticion.data;
       console.log(respuestaTime);
@@ -116,7 +123,7 @@ const FormState = (props) => {
   };
   const funcionPeticionHoraFinal = async () => {
     try {
-      const urlTimeEnd = `http://localhost:4000/api/timerend`;
+      const urlTimeEnd = url_peticion_hora_final;
       const peticion = await axios.post(urlTimeEnd);
       const respuestaTime = peticion.data;
 
@@ -129,7 +136,7 @@ const FormState = (props) => {
   };
   const funcionEnviarDatos = async (valor) => {
     try {
-      const urlEnvioDate = `http://localhost:4000/api/dates`;
+      const urlEnvioDate = url_envio_datos;
       const envio = await axios.post(urlEnvioDate, {
         store: valor,
       });
