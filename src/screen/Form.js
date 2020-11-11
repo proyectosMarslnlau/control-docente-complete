@@ -334,6 +334,12 @@ const Form = ({navigation}) => {
       //console.log(valorFinal);
     }
   };
+
+  //
+  const confirm1 = () => {
+    console.log('----------**---------');
+    console.log('LENNY')
+  }
   //------------------------------------------------
   return (
     <View>
@@ -419,7 +425,7 @@ const Form = ({navigation}) => {
                     titleStyle={{
                       fontFamily: 'Exo2-Medium',
                     }}
-                    onPress={onPressFecha}
+                    onPress={confirm1}
                   />
                 )}
               </View>
