@@ -22,7 +22,7 @@ const Camera = ({foto, guardarFoto}) => {
   if (Object.keys(foto.resourcePath).length === 0) {
     //console.log('vacio');
   } else {
-    console.log('revisar');
+    
   }
   const selectFile = () => {
     var options = {
@@ -31,7 +31,7 @@ const Camera = ({foto, guardarFoto}) => {
       takePhotoButtonTitle: 'Tomar Foto',
       chooseFromLibraryButtonTitle: 'Buscar en mis Archivos',
       chooseFromLibraryButtonTitle: null,
-      quality: 0.8,
+      quality: 0.5,
       maxWidth: 600,
       storageOptions: {
         skipBackup: true,
@@ -43,22 +43,22 @@ const Camera = ({foto, guardarFoto}) => {
     };
 
     ImagePicker.showImagePicker(options, (res) => {
-      console.log('Response = ', res);
+     
 
       if (res.didCancel) {
-        console.log('User cancelled image picker');
+        //console.log('User cancelled image picker');
       } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
+        //console.log('ImagePicker Error: ', res.error);
       } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
+        //console.log('User tapped custom button: ', res.customButton);
         alert(res.customButton);
       } else {
         let source = res;
-        console.log(res);
+        
         guardarFoto({
           resourcePath: source,
         });
-        console.log('LENNY LAURA VALENCIA');
+        
       }
     });
   };

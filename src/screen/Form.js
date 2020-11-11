@@ -57,7 +57,6 @@ const Form = ({navigation}) => {
     //Obtiene del store y actualiza los STATE
 
     getDataTime().then((item) => {
-      console.log(item);
       if (item !== null) {
         guardarMateria(item.materia);
         guardarTitulo(item.titulo);
@@ -290,7 +289,6 @@ const Form = ({navigation}) => {
   //Boton para CONFIRMAR envio de informacion TOTAL
   //--------------------------------------------------
   const onPressConfirmar = () => {
-    console.log('DENYOS----------------------------');
     const valorFinal = {
       materia: materia,
       titulo: titulo,
@@ -335,11 +333,6 @@ const Form = ({navigation}) => {
     }
   };
 
-  //
-  const confirm1 = () => {
-    console.log('----------**---------');
-    console.log('LENNY')
-  }
   //------------------------------------------------
   return (
     <View>
@@ -425,7 +418,7 @@ const Form = ({navigation}) => {
                     titleStyle={{
                       fontFamily: 'Exo2-Medium',
                     }}
-                    onPress={confirm1}
+                    onPress={onPressFecha}
                   />
                 )}
               </View>

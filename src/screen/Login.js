@@ -7,6 +7,9 @@ import {
   Image,
   KeyboardAvoidingView,
 } from 'react-native';
+//
+//Importamos la orientacion de MOBILE
+import Orientation from 'react-native-orientation-locker';
 //-------------------- CONTEXT -------------------------
 import loginContext from '../context/login/loginContext';
 import alertContext from '../context/alert/alertContext';
@@ -31,6 +34,10 @@ const Login = ({navigation}) => {
   );
 
   //----------------------------------------------------------------------
+  useEffect(() => {
+    //Bloqueamos la orientacion solo a PORTRAIT
+    Orientation.lockToPortrait();
+  }, [])
   // USEEFFECT
   useEffect(() => {
     //EXTRAE EL VALOR DEL STORE
